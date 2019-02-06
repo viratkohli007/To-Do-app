@@ -6,15 +6,17 @@
     <div class="form-group">
       <div class="col-lg-3"></div>
     <div ><input class="col-lg-3" type="text" placeholder="Add Tasks" v-model="input" id="task"></div>
-    <div class="col-lg-6"><button @click="add" @keyup.enter="add" class="btn btn-primary">Add</button>
+    <div class="col-lg-6">
 
+      <button @click="add" @keyup.enter="add" class="btn btn-primary">Add</button>
     </div>
     </div>
   </form>
      <div v-for="(ar, index) in arr">
-        <span id="try">{{ar}} </span><button @click="deleteTodo(index)"><i class="fa fa-trash"></i></button>
+      <input type="checkbox" name="check" @change="changeEvent(index, ar.done)">
+        <span :class="{done: ar.done}">{{ar.text}} </span><button @click="deleteTodo(index)"><i class="fa fa-trash"></i></button>
         <button @click="editTodo(ar)">edit</button>
-        <button @click="editIt(index)">editIt</button>
+
      </div>
   </div>
 </template>
@@ -25,7 +27,7 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      arr: [],
+      arr: [{text:"", done:false}],
       id: 0,
      input: ""
     }
@@ -33,8 +35,9 @@ export default {
   methods: {
     add(){
       if(this.input.length != 0){
-      this.arr.push(this.input),
+      this.arr.push({text:this.input, done:false}),
        this.input= ""
+
     }
   },
     deleteTodo(event){
@@ -46,6 +49,9 @@ export default {
      editIt(event){
 
        this.arr[event] = this.input
+     },
+     changeEvent(index, val){
+       this.arr[index].done = !val
      }
   }
 }
@@ -66,5 +72,9 @@ li {
 }
 a {
   color: green;
+}
+.done{
+  text-decoration-line: line-through;
+  color:green;
 }
 </style>
